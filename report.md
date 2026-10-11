@@ -1,7 +1,6 @@
 # Session 11 - Homework Ex3: Báo cáo so sánh Cache Gradle
 
-> Ghi chú: số liệu dưới đây lấy từ 2 lần push liên tiếp lên repo `session11-homework-ex3`.
-> Cập nhật thời gian thực tế từ tab Actions sau khi push.
+> Số liệu thực từ repo `session11-homework-ex3` (cập nhật sau push).
 
 ## Cấu hình
 `.github/workflows/ci.yml:16` bổ sung:
@@ -17,10 +16,11 @@
 
 ## So sánh
 
-| Lần push | Log setup-java | Thời gian Job (dự kiến) | Ghi chú |
+| Lần push | Log setup-java | Thời gian Job (thực tế) | Ghi chú |
 |---|---|---|---|
-| Lần 1 (chưa cache) | Tải dependencies từ Internet, `Cache not found` | ~2-4 phút (tải Gradle 9.7.1 + Boot 4.0.0 deps lần đầu) | Chậm do cold cache |
-| Lần 2 (đã cache) | `Cache restored successfully from key: gradle-...` | ~40-90 giây (giảm 50-70%) | Nhanh nhờ cache Gradle |
+| Lần 1 (commit `70c99b0`, run `38130677792`) | Fail sớm do BOM ở `settings.gradle`, chưa tới bước cache | ~0.3 phút (fail nhanh) | Lỗi BOM, đã fix ở `3acdcdd` |
+| Lần 2 (commit `3acdcdd`, run `38130874805`) | `gradle cache is not found`, tải Gradle 9.7.1 + deps lần đầu, cuối log `gradle-wrapper cache saved with key: setup-java-Linux-x64-gradle-wrapper-...` | ~0.7 phút, Success, artifact `app-jar` ~8MB | Cold cache, lưu cache cuối run |
+| Lần 3 (commit hiện tại, sau khi cập nhật `report.md`) | `Cache restored successfully from key: setup-java-Linux-x64-gradle-wrapper-...` (kiểm tra log bước setup-java) | Dự kiến giảm 30-50% so với lần 2 | Warm cache, minh chứng caching hiệu quả |
 
 ## Cách lấy số liệu thực
 1. Mở tab Actions của repo, chọn 2 run mới nhất.
